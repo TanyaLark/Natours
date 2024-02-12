@@ -63,6 +63,40 @@ app.get('/api/v1/tours/:id', (req, res) => {
   });
 });
 
+app.patch('/api/v1/tours/:id', (req, res) => {
+  const id = req.params.id * 1;
+  const tour = tours.find((el) => el.id === id);
+
+  if (!tour) {
+    return req.status(404).json({
+      status: 'fail',
+      message: 'Invalid ID',
+    });
+  }
+
+  const properties = Object.keys(req.body);
+
+  for (const prop of properties) {
+    if (!(prop in tour)) {
+      return res.status(400).json({
+        status: 'fail',
+        message: `Property ${prop} does not exist!`,
+      });
+    }
+  }
+
+  for (const prop in req.body) {
+    tour[prop] = req.body[prop];
+  }
+
+  res.status(200).json({
+    status: 'Success',
+    data: {
+      tour,
+    },
+  });
+});
+
 const port = 3000;
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
