@@ -5,6 +5,10 @@ const app = express();
 
 // Middlewares
 app.use(express.json());
+app.use((req, res, next) => {
+  req.requestTime = new Date().toISOString();
+  next();
+});
 
 app.get('/', (req, res) => {
   res.status(200).json({ message: 'Hello from server side!', app: 'Natours' });
@@ -17,6 +21,7 @@ const tours = JSON.parse(
 const getTours = (req, res) => {
   res.status(200).json({
     status: 'success',
+    requestedAt: req.requestTime,
     results: tours.length,
     data: {
       tours,
