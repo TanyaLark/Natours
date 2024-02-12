@@ -76,17 +76,10 @@ app.patch('/api/v1/tours/:id', (req, res) => {
 
   const properties = Object.keys(req.body);
 
-  for (const prop of properties) {
-    if (!(prop in tour)) {
-      return res.status(400).json({
-        status: 'fail',
-        message: `Property ${prop} does not exist!`,
-      });
-    }
-  }
-
   for (const prop in req.body) {
-    tour[prop] = req.body[prop];
+    if (prop in tour) {
+      tour[prop] = req.body[prop];
+    }
   }
 
   res.status(200).json({
