@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 const app = require('./app');
 
-dotenv.config({ path: './config.env' });
+dotenv.config({ path: './.env' });
 
 const DB = process.env.DATABASE.replace(
   '<PASSWORD>',
@@ -13,11 +13,10 @@ mongoose
   .connect(DB, {
     useNewUrlParser: true,
     useCreateIndex: true,
-    useFindAndModify: false,
-    useUnifiedTopology: true
+    useFindAndModify: false
+    // useUnifiedTopology: true
   })
-  .then((con) => {
-    console.log(con.connections);
+  .then(() => {
     console.log('DB connection successful');
   });
 
